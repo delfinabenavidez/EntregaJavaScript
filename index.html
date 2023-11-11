@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de viaje</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Agrega el enlace a Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+  <h1>Simulador de viaje</h1>
+
+  <div>
+    <input type="text" id="origin" placeholder="Origen">
+    <input type="text" id="destination" placeholder="Destino">
+    <input type="number" id="speed" placeholder="Velocidad">
+    <input type="number" id="costPerMile" placeholder="Costo por milla">
+    <button id="start">Iniciar</button>
+  </div>
+
+  <!-- Agrega un contenedor div para el mapa con el ID "map" -->
+  <div id="map" style="height: 400px;"></div>
+
+  <p>
+    Este simulador te ayuda a planificar un viaje. Ingresa los datos del viaje y haz clic en el botón "Iniciar" para ver la ruta del viaje en un mapa.
+  </p>
+
+  <!-- Agrega el enlace a Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Agrega tu archivo JavaScript modificado aquí -->
+  <script src="app.js"></script>
+</body>
+</html>
