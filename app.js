@@ -1,7 +1,3 @@
-// Importamos las librerías necesarias
-import TweenMax from 'gsap';
-import L from 'leaflet';
-
 // Definimos una estructura de datos para representar el viaje
 class Trip {
   constructor(origin, destination, preferences) {
@@ -11,43 +7,37 @@ class Trip {
     this.startTime = null;
   }
 
-  // Obtiene la ruta del viaje
-  async getRoute() {
-    try {
-      // Obtenemos los datos del viaje de una API utilizando fetch
-      const response = await fetch('https://api.example.com/trips', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.toJSON()),
-      });
+  // Obtiene la distancia en línea recta entre dos puntos
+  getDistance() {
+    const lat1 = this.origin.latitude;
+    const lon1 = this.origin.longitude;
+    const lat2 = this.destination.latitude;
+    const lon2 = this.destination.longitude;
 
-      if (!response.ok) {
-        throw new Error('Error al obtener la ruta del viaje');
-      }
+    // Fórmula de la distancia en línea recta (fórmula de Haversine)
+    const R = 6371; // Radio de la Tierra en kilómetros
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distancia en kilómetros
 
-      // Decodificamos los datos
-      const data = await response.json();
-
-      // Devolvemos la ruta
-      return data.route;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    return distance;
   }
 
-  // Devuelve la duración del viaje
-  getDuration() {
-    // Obtenemos la ruta del viaje de forma asincrónica
-    return this.getRoute().then(route => route.length / this.preferences.speed);
+  // Calcula el costo del viaje en gasolina
+  getGasCost() {
+    const distance = this.getDistance();
+    const gasCost = distance * this.preferences.costPerKilometer;
+    return gasCost;
   }
 
-  // Devuelve el costo del viaje
-  getCost() {
-    // Obtenemos la ruta del viaje de forma asincrónica
-    return this.getRoute().then(route => route.length * this.preferences.costPerMile);
+  // Calcula el costo total del viaje (solo gasto en gasolina)
+  getTotalCost() {
+    const gasCost = this.getGasCost();
+    return gasCost + this.preferences.otherCosts; // Puedes agregar otros costos aquí
   }
 
   // Devuelve una representación JSON del viaje
@@ -66,51 +56,40 @@ class Trip {
 }
 
 // Definimos una función para simular el viaje
-async function simulate() {
+function simulate() {
   try {
     // Obtenemos los datos del viaje del usuario
-    const origin = document.getElementById('origin').value;
-    const destination = document.getElementById('destination').value;
-    const speed = parseFloat(document.getElementById('speed').value);
-    const costPerMile = parseFloat(document.getElementById('costPerMile').value);
+    const originSelect = document.getElementById('origin');
+    const destinationSelect = document.getElementById('destination');
+    const costPerKilometer = parseFloat(document.getElementById('costPerKilometer').value);
+    const otherCosts = parseFloat(document.getElementById('otherCosts').value);
 
     // Validamos los datos del viaje
-    if (!origin || !destination || isNaN(speed) || isNaN(costPerMile)) {
+    if (isNaN(costPerKilometer) || isNaN(otherCosts)) {
       // Mostramos un mensaje de error al usuario
       alert('Por favor, ingrese todos los datos requeridos de manera válida');
       return;
     }
 
+    const origin = JSON.parse(originSelect.value);
+    const destination = JSON.parse(destinationSelect.value);
+
     // Creamos un nuevo viaje
-    const preferences = { speed, costPerMile };
+    const preferences = { costPerKilometer, otherCosts };
     const trip = new Trip(origin, destination, preferences);
 
     // Iniciamos el viaje
     trip.start();
 
-    // Agregamos el círculo que representa el origen del viaje
-    const originMarker = L.marker([origin.latitude, origin.longitude], {
-      icon: L.icon({
-        iconUrl: 'img/marker.png',
-        iconSize: [20, 20],
-      }),
-    }).addTo(map);
+    // Calculamos el costo total del viaje (solo gasto en gasolina)
+    const totalCost = trip.getTotalCost();
 
-    // Agregamos el círculo que representa el destino del viaje
-    const destinationMarker = L.marker([destination.latitude, destination.longitude], {
-      icon: L.icon({
-        iconUrl: 'img/marker.png',
-        iconSize: [20, 20],
-      }),
-    }).addTo(map);
+    // Mostramos el resultado al usuario
+    alert(`El costo total del viaje es de ${totalCost.toFixed(2)} pesos (solo gasto en gasolina)`);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-    // Agregamos la ruta del viaje al mapa
-    const route = await trip.getRoute();
-    L.polyline(route, { color: '#000', weight: 5 }).addTo(map);
-
-    // Agregamos un control deslizante para ajustar la velocidad
-    const speedSlider = document.createElement('input');
-    speedSlider.type = 'range';
-    speedSlider.min = 10;
-    speedSlider.max = 100;
-    speedSlider.value = 50;
+// Evento para simular el viaje al hacer clic en un botón (debes tener un botón en tu HTML con el id "simulateBtn")
+document.getElementById('simulateBtn').addEventListener('click', simulate);
