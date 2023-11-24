@@ -10,9 +10,11 @@
 
 <body class="container mt-4">
   <h1 class="text-center mb-4">Simulador de Viaje</h1>
+  <!-- Formulario para simular el viaje -->
   <div class="mb-5">
     <div class="form-group mb-3">
       <label for="origin">Origen:</label>
+        <!-- Selección de origen a traves del menu desplegable -->
       <select class="form-control" id="origin">
         <option value='{"latitude": -34.61, "longitude": -58.38}'>Argentina</option>
         <option value='{"latitude": -32.79, "longitude": -56.02}'>Uruguay</option>
@@ -22,13 +24,14 @@
   
     <div class="form-group mb-3">
       <label for="destination">Destino:</label>
+        <!-- Selección de destino a traves del menu desplegable -->
       <select class="form-control" id="destination">
         <option value='{"latitude": -34.61, "longitude": -58.38}'>Argentina</option>
         <option value='{"latitude": -32.79, "longitude": -56.02}'>Uruguay</option>
         <option value='{"latitude": -15.78, "longitude": -47.93}'>Brasil</option>
       </select>
     </div>
-  
+  <!-- Costo por kilometro y otros costos -->
     <div class="form-group mb-3">
       <label for="costPerKilometer">Costo por kilómetro:</label>
       <input placeholder="0" type="number" class="form-control" id="costPerKilometer" />
@@ -43,9 +46,10 @@
       <button class="btn btn-primary" id="simulateBtn">Simular Viaje</button>
     </div>
   </div> 
-
+<!-- Seccion para otras consultas -->
   <div class="mb-5">
     <h3>Otras consultas</h3>
+    <!-- Tabla para mostrar los resultados de otras consultas -->
     <table class="table mt-4">
       <thead>
         <tr>
@@ -61,7 +65,7 @@
     </table>
   </div>
 
-
+  <!-- Scripts necesarios -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
   <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>

@@ -1,4 +1,6 @@
+// Budget para los datos y su almacenamiento 
 let budget = [];
+// Recuperamos datos almacenados en localStorage o como vacio si no hay nada
 const storedbudget = JSON.parse(localStorage.getItem('trip_budget')) || [];
 budget.push(...storedbudget);
 
@@ -7,11 +9,13 @@ if (budget.length > 0) {
 }
 
 function Trip(origin, destination, preferences) {
+   // Propiedades del viaje
   this.origin = origin;
   this.destination = destination;
   this.preferences = preferences;
   this.startTime = null;
 
+ // Calcular la distancia entre el origen y el destino
   this.getDistance = function () {
     const R = 6371;
     const dLat = (this.destination.latitude - this.origin.latitude) * (Math.PI / 180);
@@ -25,19 +29,19 @@ function Trip(origin, destination, preferences) {
 
     return distance;
   };
-
+ // Calcular el costo de la gasolina basado en la distancia y el costo por kilometro.
   this.getGasCost = function () {
     const distance = this.getDistance();
     const gasCost = distance * this.preferences.costPerKilometer;
     return gasCost;
   };
-
+// Costo total del viaje 
   this.getTotalCost = function () {
     const gasCost = this.getGasCost();
     return gasCost + this.preferences.otherCosts;
   };
 }
-
+// Usamos la libreria SweetAlert2 para mostrar mensajes
 function showMessage(icon, text, timer) {
   Swal.fire({
     icon,
@@ -52,6 +56,7 @@ function validateInput(value, minValue = 0) {
 }
 
 async function simulate() {
+  // Obtención de elementos del formulario.
   const originSelect = document.getElementById('origin');
   const destinationSelect = document.getElementById('destination');
   const costPerKilometer = parseFloat(document.getElementById('costPerKilometer').value);
@@ -63,19 +68,20 @@ async function simulate() {
     showMessage('error', 'Por favor, ingrese valores válidos para todos los datos requeridos', 2500);
     return;
   }
-
+// Verificamos que el origen y el destino no sean los mismos.
   if (origin.latitude == destination.latitude && origin.longitude == origin.longitude) {
     showMessage('error', 'El punto de origen y destino no puede ser el mismo', 2500);
     return;
   }
-
+// Tipo de cambio del dólar.
   const dollarExchangeRate = await getDollarExchangeRate();
-
+ // Trip con preferencias y detalles
   const preferences = { costPerKilometer, otherCosts, dollarExchangeRate };
   const trip = new Trip(origin, destination, preferences);
-
+  // Registro del tiempo de inicio del viaje.
   const startTime = new Date();
   trip.startTime = startTime.toLocaleTimeString()
+  //Obtenemos el costo total del viaje en pesos y dolares
   const totalCost = trip.getTotalCost();
   const totalCostInDollars = totalCost / dollarExchangeRate;
 
@@ -86,7 +92,7 @@ async function simulate() {
   showMessage('success', text, 2500);
   actualizarTabla();
 }
-
+// Actualiza la tabla con los datos actuales
 function actualizarTabla() {
   const tabla = document.getElementById('consultaTableBody');
   tabla.innerHTML = '';
@@ -103,7 +109,7 @@ function actualizarTabla() {
 
   localStorage.setItem('trip_budget', JSON.stringify(budget));
 }
-
+// Funcion asincronica para obtener el tipo de cambio del dolar desde una API.
 async function getDollarExchangeRate() {
   try {
     const response = await fetch('https://criptoya.com/api/dolar/oficial');
