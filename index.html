@@ -1,35 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
   <title>Simulador de Viaje</title>
-  <script type="module" src="app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
-<body>
 
-  <label for="origin">Origen:</label>
-  <select id="origin">
-    <option value='{"latitude": -34.61, "longitude": -58.38}'>Argentina</option>
-    <option value='{"latitude": -32.79, "longitude": -56.02}'>Uruguay</option>
-    <option value='{"latitude": -15.78, "longitude": -47.93}'>Brasil</option>
-  </select>
+<body class="container mt-4">
+  <h1 class="text-center mb-4">Simulador de Viaje</h1>
+  <div class="mb-5">
+    <div class="form-group mb-3">
+      <label for="origin">Origen:</label>
+      <select class="form-control" id="origin">
+        <option value='{"latitude": -34.61, "longitude": -58.38}'>Argentina</option>
+        <option value='{"latitude": -32.79, "longitude": -56.02}'>Uruguay</option>
+        <option value='{"latitude": -15.78, "longitude": -47.93}'>Brasil</option>
+      </select>
+    </div>
+  
+    <div class="form-group mb-3">
+      <label for="destination">Destino:</label>
+      <select class="form-control" id="destination">
+        <option value='{"latitude": -34.61, "longitude": -58.38}'>Argentina</option>
+        <option value='{"latitude": -32.79, "longitude": -56.02}'>Uruguay</option>
+        <option value='{"latitude": -15.78, "longitude": -47.93}'>Brasil</option>
+      </select>
+    </div>
+  
+    <div class="form-group mb-3">
+      <label for="costPerKilometer">Costo por kilómetro:</label>
+      <input placeholder="0" type="number" class="form-control" id="costPerKilometer" />
+    </div>
+  
+    <div class="form-group mb-3">
+      <label for="otherCosts">Otros costos:</label>
+      <input placeholder="0" type="number" class="form-control" id="otherCosts" />
+    </div>
 
-  <label for="destination">Destino:</label>
-  <select id="destination">
-    <option value='{"latitude": -34.61, "longitude": -58.38}'>Argentina</option>
-    <option value='{"latitude": -32.79, "longitude": -56.02}'>Uruguay</option>
-    <option value='{"latitude": -15.78, "longitude": -47.93}'>Brasil</option>
-  </select>
+    <div class="mb-3">
+      <button class="btn btn-primary" id="simulateBtn">Simular Viaje</button>
+    </div>
+  </div> 
 
-  <label for="costPerKilometer">Costo por kilómetro:</label>
-  <input type="number" id="costPerKilometer" />
+  <div class="mb-5">
+    <h3>Otras consultas</h3>
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>Horario</th>
+          <th>Costo por Kilómetro</th>
+          <th>Otros Costos</th>
+          <th>Costo Total</th>
+          <th>Costo total en USD</th>
+        </tr>
+      </thead>
+      <tbody id="consultaTableBody">
+      </tbody>
+    </table>
+  </div>
 
-  <label for="otherCosts">Otros costos:</label>
-  <input type="number" id="otherCosts" />
 
-  <button id="simulateBtn">Simular Viaje</button>
-
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+  <script src="assets/app.js"></script>
 </body>
+
 </html>

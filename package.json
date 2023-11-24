@@ -1,0 +1,21 @@
+{ 
+  "name": "entregajavascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delfinabenavidez/EntregaJavaScript.git"
+  },
+  "author": "Delfina Benavidez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/delfinabenavidez/EntregaJavaScript/issues"
+  },
+  "homepage": "https://delfinabenavidez.github.io/EntregaJavaScript/",
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "sweetalert2": "^10.16.11"
+  }
+}
